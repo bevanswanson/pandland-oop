@@ -1,0 +1,65 @@
+[
+    {
+        "project_name": "Data Migration",
+        "client": "ABC Corporation",
+        "description": "Migrate data from legacy systems to a new database",
+        "technical_skills": ["ETL", "SQL", "Data Mapping"],
+        "duration": 3
+    },
+    {
+        "project_name": "Cloud Migration",
+        "client": "XYZ Corporation",
+        "description": "Migrate on-premises infrastructure to the cloud",
+        "technical_skills": ["Cloud Computing", "Virtualization", "Networking"],
+        "duration": 6
+    },
+    {
+        "project_name": "Security Assessment",
+        "client": "DEF Corporation",
+        "description": "Conduct a security assessment and provide recommendations",
+        "technical_skills": ["Penetration Testing", "Vulnerability Assessment", "Security Auditing"],
+        "duration": 2
+    },
+    {
+        "project_name": "Machine Learning Implementation",
+        "client": "123 Corporation",
+        "description": "Implement machine learning models for predictive analytics",
+        "technical_skills": ["Machine Learning", "Python", "Data Preprocessing"],
+        "duration": 4
+    },
+    {
+        "project_name": "IT Infrastructure Assessment",
+        "client": "XYZ Corporation",
+        "description": "Assess the existing IT infrastructure and provide recommendations for improvement",
+        "technical_skills": ["Network Architecture", "System Administration", "Security"],
+        "duration": 3
+    },
+    {
+        "project_name": "Data Analytics and Visualization",
+        "client": "ABC Corporation",
+        "description": "Perform data analysis and create interactive visualizations for business insights",
+        "technical_skills": ["Data Analytics", "Data Visualization", "Statistical Analysis"],
+        "duration": 4
+    },
+    {
+        "project_name": "Software Development",
+        "client": "DEF Corporation",
+        "description": "Develop custom software solutions to meet specific business requirements",
+        "technical_skills": ["Software Development", "Programming Languages", "Database Design"],
+        "duration": 6
+    },
+    {
+        "project_name": "Digital Transformation Strategy",
+        "client": "123 Corporation",
+        "description": "Assist in formulating a digital transformation strategy for business growth and innovation",
+        "technical_skills": ["Digital Strategy", "Change Management", "Emerging Technologies"],
+        "duration": 5
+    },
+    {
+        "project_name": "Cybersecurity Incident Response",
+        "client": "EFG Corporation",
+        "description": "Develop an incident response plan and conduct simulations to prepare for cybersecurity incidents",
+        "technical_skills": ["Cybersecurity", "Incident Response", "Forensics"],
+        "duration": 2
+    }
+]
