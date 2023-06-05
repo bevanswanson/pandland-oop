@@ -22,30 +22,19 @@ class DataFrame:
         return tabulate(self.data, headers=self.columns, tablefmt='html')
 
     def head(self, n=5):
-        return tabulate(self.data[:n], headers=self.columns, tablefmt='html')
+        raise Exception('TODO')
 
     def tail(self, n=5):
-        return tabulate(self.data[-n:], headers=self.columns, tablefmt='html')
+        raise Exception('TODO')
 
     def iloc(self, index):
-        try:
-            return self.data[index]
-        except IndexError:
-            return f'That row index is out of range, please select a number between 0 and {len(self.data)}'
+        raise Exception('TODO')
 
     def get_column(self, column_name):
-        try:
-            col_index = self.columns.index(column_name)
-            return [ row[col_index] for row in self.data ]
-        except ValueError:
-            return f'The Column: {column_name} is not found in the DataFrame. It must be one of {self.columns}'
+        raise Exception('TODO')
 
     def get_mean(self, column_name):
-        data = self.get_column(column_name)
-        try:
-            return sum([ int(num) for num in data ]) / len(data)
-        except ValueError:
-            return f'Column `{column_name}` must be of a numerical type'
+        raise Exception('TODO')
 
     @staticmethod
     def from_csv(path):
