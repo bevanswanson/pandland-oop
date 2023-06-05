@@ -52,22 +52,24 @@ class DataFrame:
         except ValueError:
             return f'Column `{column_name}` must be of a numerical type'
 
-def df_from_csv(path):
-    with open(path, 'r') as file:
-        csv_reader = csv.reader(file)
-        data = [ row for row in csv_reader ]
-        columns = data.pop(0)
+    @staticmethod
+    def from_csv(path):
+        with open(path, 'r') as file:
+            csv_reader = csv.reader(file)
+            data = [ row for row in csv_reader ]
+            columns = data.pop(0)
 
-        return DataFrame(data=data, columns=columns)
+            return DataFrame(data=data, columns=columns)
 
-def df_from_json(path):
-    with open(path, 'r') as file:
-        json_file = json.load(file)
-        columns = []
-        data = []
-        for line in json_file:
-            cols, row = zip(*line.items())
-            columns = [ col for col in cols if col not in columns ]
-            data.append(list(row))
+    @staticmethod
+    def from_json(path):
+        with open(path, 'r') as file:
+            json_file = json.load(file)
+            columns = []
+            data = []
+            for line in json_file:
+                cols, row = zip(*line.items())
+                columns = [ col for col in cols if col not in columns ]
+                data.append(list(row))
 
-        return DataFrame(data=data, columns=columns)
+            return DataFrame(data=data, columns=columns)

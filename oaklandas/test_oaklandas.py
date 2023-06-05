@@ -4,7 +4,7 @@ import pytest
 
 from tabulate import tabulate
 
-from oaklandas.oaklandas import DataFrame, df_from_csv, df_from_json
+from oaklandas.oaklandas import DataFrame
 
 # oaklandas Dataframe class method
 @pytest.fixture
@@ -100,7 +100,7 @@ def sample_csv_file(tmp_path):
 
 def test_df_from_csv(sample_csv_file):
     # Test the DataFrame creation from a CSV file
-    df = df_from_csv(sample_csv_file)
+    df = DataFrame.from_csv(sample_csv_file)
 
     # Check the data and column values
     expected_data = [
@@ -119,7 +119,7 @@ def test_df_from_csv_header_only(tmp_path):
     with open(csv_file, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(data)
-    df = df_from_csv(csv_file)
+    df = DataFrame.from_csv(csv_file)
     assert df.data == []
     assert df.columns == ['Name', 'Age', 'Salary']
 
@@ -139,7 +139,7 @@ def sample_json_file(tmp_path):
 
 def test_df_from_json(sample_json_file):
     # Test the DataFrame creation from a JSON file
-    df = df_from_json(sample_json_file)
+    df = DataFrame.from_json(sample_json_file)
 
     # Check the data and column values
     expected_data = [
