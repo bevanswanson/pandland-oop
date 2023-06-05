@@ -1,50 +1,152 @@
+import csv, json
+
 import pytest
 
-from oaklandas.oaklandas import DataFrame
+from tabulate import tabulate
 
+from oaklandas.oaklandas import DataFrame, df_from_csv, df_from_json
+
+# oaklandas Dataframe class method
 @pytest.fixture
-def sample_dataframe():
+def dataframe():
     data = [
-        [1, 'John', 25],
-        [2, 'Jane', 30],
-        [3, 'Alice', 35],
-        [4, 'Bob', 40]
+        ['John', 30, 'New York'],
+        ['Jane', 25, 'London'],
+        ['Bob', 35, 'Paris']
     ]
-    columns = ['ID', 'Name', 'Age']
-    return DataFrame(data, columns)
+    columns = ['Name', 'Age', 'City']
+    df = DataFrame(data, columns)
+    return df
 
-def test_dataframe_repr(sample_dataframe):
-    assert repr(sample_dataframe) == "[[1, 'John', 25], [2, 'Jane', 30], [3, 'Alice', 35], [4, 'Bob', 40]]"
+def test_repr(dataframe):
+    expected_output = tabulate(dataframe.data, headers=dataframe.columns, tablefmt='html')
+    assert dataframe.__repr__() == expected_output
 
-def test_dataframe_set_data(sample_dataframe):
-    new_data = [
-        [5, 'Eve', 45],
-        [6, 'Frank', 50]
+def test_head_default(dataframe):
+    expected_output = tabulate(dataframe.data[:5], headers=dataframe.columns, tablefmt='html')
+    assert dataframe.head() == expected_output
+
+def test_head_n(dataframe):
+    n = 2
+    expected_output = tabulate(dataframe.data[:n], headers=dataframe.columns, tablefmt='html')
+    assert dataframe.head(n) == expected_output
+
+# def test_append(dataframe):
+#     new_row = ['Alice', 28, 'Sydney']
+#     expected_data = dataframe.data + [new_row]
+#     dataframe.append(new_row)
+#     assert dataframe.data == expected_data
+
+# def test_append_with_header(dataframe):
+#     new_data = [
+#         ['Name', 'Age', 'City'],
+#         ['Eva', 32, 'Berlin']
+#     ]
+#     expected_data = dataframe.data + new_data[1:]
+#     dataframe.append(new_data, header=True)
+#     assert dataframe.data == expected_data
+
+def test_iloc_existing_index(dataframe):
+    index = 1
+    expected_row = ['Jane', 25, 'London']
+    assert dataframe.iloc(index) == expected_row
+
+def test_iloc_out_of_range_index(dataframe):
+    index = 10
+    expected_error = f'That row index is out of range, please select a number between 0 and {len(dataframe.data)}'
+    assert dataframe.iloc(index) == expected_error
+
+def test_get_column_existing_column(dataframe):
+    column_name = 'Age'
+    expected_column = [30, 25, 35]
+    assert dataframe.get_column(column_name) == expected_column
+
+def test_get_column_non_existing_column(dataframe):
+    column_name = 'Salary'
+    expected_error = f'The Column: {column_name} is not found in the DataFrame. It must be one of {dataframe.columns}'
+    assert dataframe.get_column(column_name) == expected_error
+
+def test_info(dataframe, capsys):
+    expected_output = "Data columns (total 3 columns):\nName\nAge\nCity\ndtypes: object\n"
+    dataframe.info()
+    captured_output = capsys.readouterr().out
+    assert captured_output == expected_output
+
+def test_get_mean(dataframe):
+    column_name = 'Age'
+    expected_mean = 30
+    assert dataframe.get_mean(column_name) == expected_mean
+
+def test_get_mean_non_numerical(dataframe):
+    column_name = 'Name'
+    expected_output = f"Column `{column_name}` must be of a numerical type"
+    assert dataframe.get_mean(column_name) == expected_output
+
+
+# df_from_csv()
+@pytest.fixture
+def sample_csv_file(tmp_path):
+    data = [
+        ['Name', 'Age', 'Salary'],
+        ['John Doe', '30', '50000'],
+        ['Jane Smith', '35', '60000'],
+        ['Mark Johnson', '25', '40000'],
     ]
-    sample_dataframe.set_data(new_data)
-    assert sample_dataframe.data == new_data
+    csv_file = tmp_path / 'sample.csv'
+    with open(csv_file, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(data)
+    return csv_file
 
-def test_dataframe_set_columns(sample_dataframe):
-    new_columns = ['ID', 'Name', 'Age', 'Gender']
-    sample_dataframe.set_columns(new_columns)
-    assert sample_dataframe.columns == new_columns
+def test_df_from_csv(sample_csv_file):
+    # Test the DataFrame creation from a CSV file
+    df = df_from_csv(sample_csv_file)
 
-def test_dataframe_head(sample_dataframe):
-    assert sample_dataframe.head() == [[1, 'John', 25], [2, 'Jane', 30], [3, 'Alice', 35], [4, 'Bob', 40]]
+    # Check the data and column values
+    expected_data = [
+        ['John Doe', '30', '50000'],
+        ['Jane Smith', '35', '60000'],
+        ['Mark Johnson', '25', '40000'],
+    ]
+    expected_columns = ['Name', 'Age', 'Salary']
+    assert df.data == expected_data
+    assert df.columns == expected_columns
 
-def test_dataframe_tail(sample_dataframe):
-    assert sample_dataframe.tail() == [[1, 'John', 25], [2, 'Jane', 30], [3, 'Alice', 35], [4, 'Bob', 40]]
+def test_df_from_csv_header_only(tmp_path):
+    # Test the case where the CSV file contains only the header row
+    data = [['Name', 'Age', 'Salary']]
+    csv_file = tmp_path / 'header_only.csv'
+    with open(csv_file, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(data)
+    df = df_from_csv(csv_file)
+    assert df.data == []
+    assert df.columns == ['Name', 'Age', 'Salary']
 
-def test_dataframe_shape(sample_dataframe):
-    assert sample_dataframe.shape() == (4, 3)
 
-def test_dataframe_info(sample_dataframe, capsys):
-    sample_dataframe.info()
-    captured = capsys.readouterr()
-    expected_output = """Data columns (total 3 columns):
-ID
-Name
-Age
-dtypes: object"""
-    assert captured.out.strip() == expected_output.strip()
+# df_from_json()
+@pytest.fixture
+def sample_json_file(tmp_path):
+    data = [
+        {"Project": "Project A", "Client": "Client A", "Status": "Completed"},
+        {"Project": "Project B", "Client": "Client B", "Status": "In Progress"},
+        {"Project": "Project C", "Client": "Client C", "Status": "Pending"},
+    ]
+    json_file = tmp_path / 'sample.json'
+    with open(json_file, 'w') as file:
+        json.dump(data, file)
+    return json_file
 
+def test_df_from_json(sample_json_file):
+    # Test the DataFrame creation from a JSON file
+    df = df_from_json(sample_json_file)
+
+    # Check the data and column values
+    expected_data = [
+        ["Project A", "Client A", "Completed"],
+        ["Project B", "Client B", "In Progress"],
+        ["Project C", "Client C", "Pending"],
+    ]
+    expected_columns = ["Project", "Client", "Status"]
+    assert df.data == expected_data
+    assert df.columns == expected_columns
