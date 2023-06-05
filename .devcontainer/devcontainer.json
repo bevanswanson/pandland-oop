@@ -12,8 +12,13 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install -r /workspaces/pandland-oop/requirements.txt"
+	"postCreateCommand": "pip3 install tabulate",
 
+	"customizations": {
+		"vscode": {
+		  "extensions": ["microsoft.jupyter", "microsoft.python"]
+		}
+	}
 	// Configure tool-specific properties.
 	// "customizations": {},
 
