@@ -9,7 +9,7 @@ class DataFrame:
         self.columns = [ column.strip() for column in columns ]
 
     def __repr__(self):
-        return tabulate(self.data, headers=self.columns, tablefmt='html')
+        return tabulate(self.data, headers=self.columns, tablefmt='psql')
 
     def info(self):
         if self.data is not None:
@@ -18,19 +18,14 @@ class DataFrame:
                 print(col)
             print("dtypes: object")
 
+    def display(self):
+        return tabulate(self.data, headers=self.columns, tablefmt='html')
+
     def head(self, n=5):
         return tabulate(self.data[:n], headers=self.columns, tablefmt='html')
 
     def tail(self, n=5):
-        return tabulate(self.data[:n], headers=self.columns, tablefmt='html')
-
-    # def append(self, data, header=None):
-    #     if header:
-    #         data = [ row for row in data ]
-    #         columns = data.pop(0)
-    #         self.data.append(data)
-    #     else:
-    #         self.data.append(data)
+        return tabulate(self.data[-n:], headers=self.columns, tablefmt='html')
 
     def iloc(self, index):
         try:

@@ -19,7 +19,7 @@ def dataframe():
     return df
 
 def test_repr(dataframe):
-    expected_output = tabulate(dataframe.data, headers=dataframe.columns, tablefmt='html')
+    expected_output = tabulate(dataframe.data, headers=dataframe.columns, tablefmt='psql')
     assert dataframe.__repr__() == expected_output
 
 def test_head_default(dataframe):
@@ -31,20 +31,14 @@ def test_head_n(dataframe):
     expected_output = tabulate(dataframe.data[:n], headers=dataframe.columns, tablefmt='html')
     assert dataframe.head(n) == expected_output
 
-# def test_append(dataframe):
-#     new_row = ['Alice', 28, 'Sydney']
-#     expected_data = dataframe.data + [new_row]
-#     dataframe.append(new_row)
-#     assert dataframe.data == expected_data
+def test_tail_default(dataframe):
+    expected_output = tabulate(dataframe.data[-5:], headers=dataframe.columns, tablefmt='html')
+    assert dataframe.tail() == expected_output
 
-# def test_append_with_header(dataframe):
-#     new_data = [
-#         ['Name', 'Age', 'City'],
-#         ['Eva', 32, 'Berlin']
-#     ]
-#     expected_data = dataframe.data + new_data[1:]
-#     dataframe.append(new_data, header=True)
-#     assert dataframe.data == expected_data
+def test_tail_n(dataframe):
+    n = 2
+    expected_output = tabulate(dataframe.data[-n:], headers=dataframe.columns, tablefmt='html')
+    assert dataframe.tail(n) == expected_output
 
 def test_iloc_existing_index(dataframe):
     index = 1
