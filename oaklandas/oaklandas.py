@@ -18,42 +18,29 @@ class DataFrame:
                 print(col)
             print("dtypes: object")
 
-    def display(self):
+    def display():
         return tabulate(self.data, headers=self.columns, tablefmt='html')
 
-    def head(self, n=5):
+    def head():
         raise Exception('TODO')
 
-    def tail(self, n=5):
+    def tail():
         raise Exception('TODO')
 
-    def iloc(self, index):
+    def iloc():
         raise Exception('TODO')
 
-    def get_column(self, column_name):
+    def get_column():
         raise Exception('TODO')
 
-    def get_mean(self, column_name):
+    def get_mean():
         raise Exception('TODO')
 
     @staticmethod
-    def from_csv(path):
-        with open(path, 'r') as file:
-            csv_reader = csv.reader(file)
-            data = [ row for row in csv_reader ]
-            columns = data.pop(0)
+    def from_csv():
+        raise Exception('TODO')
 
-            return DataFrame(data=data, columns=columns)
 
     @staticmethod
-    def from_json(path):
-        with open(path, 'r') as file:
-            json_file = json.load(file)
-            columns = []
-            data = []
-            for line in json_file:
-                cols, row = zip(*line.items())
-                columns = [ col for col in cols if col not in columns ]
-                data.append(list(row))
-
-            return DataFrame(data=data, columns=columns)
+    def from_json():
+        raise Exception('TODO')
